@@ -3,5 +3,9 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+	return view('welcome');
+});
+
+Route::post('/login', function () {
+	return 'just about to login';
 });
