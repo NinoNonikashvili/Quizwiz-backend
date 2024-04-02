@@ -3,42 +3,34 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\URL;
+use App\Http\Requests\CustomEmailVerificationRequest;
 use App\Models\User;
 
 class VerifyEmailController extends Controller
 {
-    public function index(Request $request)
-    {
-        /**
-         * use $request['email']; to identify user and set email_verified to true
-         */
-        
-        if (! $request->hasValidSignature()) {
+	public function verifyEmail(CustomEmailVerificationRequest $request)
+	{
+		if (!$request->hasValidSignature(false)) {
+			return response('expired', 403);
+		}
+		$request->fulfill();
 
-            
-            return redirect()->away(env('FRONTEND_URL').'/login?expired=true&email='.$request['email']);
-        }
+		return 'email verified';
+	}
 
-        $user = User::where('email', $request['email'])->first();
-        $user->email_verified_at = now();
-        $user->save();
-        return redirect()->away(env('FRONTEND_URL').'/login?expired=false');
-    }
+	public function resendEmail(Request $request)
+	{
+		if (str_contains(($request->route('user')), '@')) {
+			$user = User::where('email', $request->route('user'))->first();
+		} else {
+			$user = User::find($request->route('user'));
+		}
 
-    public static function generateTemporaryUrl($urlName, $expiration, $email){
-        
-        return URL::temporarySignedRoute($urlName, $expiration, ['email' => $email]);
+		if ($user) {
+			$user->sendEmailVerificationNotification();
+			return response('email was resent', 200);
+		}
 
-    }
-
-    public function resendEmail(Request $request){
-
-        $email = $request['email'];
-        $link = $this::generateTemporaryUrl('verify-email', now()->addMinutes(120), ['email' => $email]);
-        //send email
-        //if success
-        return response('Verification link is sent to your email '. $link , 200)->header('Content-Type', 'application/json');
-        //else return 500
-    }
+		return response('user was not found', 404);
+	}
 }
