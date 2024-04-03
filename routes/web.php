@@ -1,11 +1,11 @@
 <?php
 
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-	return view('welcome');
+	return 'welcome';
 });
 
-Route::post('/login', function () {
-	return 'just about to login';
-});
+
