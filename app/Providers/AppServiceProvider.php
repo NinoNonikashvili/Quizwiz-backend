@@ -35,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
 			);
 		});
 		VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
-			$front_url = env('FRONTEND_URL', 'http://127.0.0.1:5173') . preg_replace('/\/api/', '/login', $url, 1);
+			$front_url = config('app.frontend_url') . preg_replace('/\/api/', '/login', $url, 1);
 			$part = explode('verify/', $front_url);
 			$subpart = explode('/', $part[1]);
 			$id = $subpart[0];
