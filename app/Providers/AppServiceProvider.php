@@ -7,6 +7,7 @@ use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Carbon;
+use App\Models\User;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -35,11 +36,18 @@ class AppServiceProvider extends ServiceProvider
 		});
 		VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
 			$front_url = env('FRONTEND_URL', 'http://127.0.0.1:5173') . preg_replace('/\/api/', '/login', $url, 1);
+			$part = explode('verify/', $front_url);
+			$subpart = explode('/', $part[1]);
+			$id = $subpart[0];
+			$username = User::find($id)->username;
 			return (new MailMessage)
-				->greeting('Hello!')
-				->subject('Hi bro! it"s me cool developer from laravel ')
-				->line('Click the button below to verify your email address.')
-				->action('Verify Email Address', $front_url);
+				->theme('custom')
+				->greeting('Verify your email address to get started')
+				->subject('Please, verify your email')
+				->line('Hi, ' . $username)
+				->line("You're almost there! To complete your sign up, please verify your email address.")
+				->action('Verify now', $front_url)
+				->salutation('  ');
 		});
 	}
 }
