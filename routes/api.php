@@ -1,65 +1,25 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Password;
-use App\Models\User;
-use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
-Route::post('/reset-password', function (Request $request) {
-	$request->validate([
-		'token'    => 'required',
-		'email'    => 'required|email',
-		'password' => 'required|min:4|confirmed',
-	]);
+Route::middleware('guest')->group(function () {
+	Route::post('/reset-password', [PasswordController::class, 'resetPassword'])->name('password.update');
 
-	$status = Password::reset(
-		$request->only('email', 'password', 'password_confirmation', 'token'),
-		function (User $user, string $password) {
-			$user->forceFill([
-				'password' => Hash::make($password),
-			])->setRememberToken(Str::random(60));
+	Route::post('/forgot-password', [PasswordController::class, 'forgotPassword'])->name('password.email');
 
-			$user->save();
+	Route::post('/login', [UserController::class, 'login'])->name('login');
 
-			event(new PasswordReset($user));
-		}
-	);
+	Route::get(
+		'/email/verify/{id}/{hash}',
+		[VerifyEmailController::class, 'verifyEmail']
+	)->name('verification.verify');
 
-	return response($status);
-})->middleware('guest')->name('password.update');
+	Route::get('/email/verification-notification/{user}', [VerifyEmailController::class, 'resendEmail'])->name('verification.send');
 
-Route::post('/forgot-password', function (Request $request) {
-	$request->validate(['email' => 'required|email']);
-
-	$status = Password::sendResetLink(
-		$request->only('email')
-	);
-
-	return response($status . 'send reset email');
-})->middleware('guest')->name('password.email');
-
-Route::get('/user', function (Request $request) {
-	return auth()->user() ?? 'no user';
-})->middleware();
-
-Route::post('/login', [UserController::class, 'login'])->middleware('guest')->name('login');
-
-Route::get(
-	'/email/verify/{id}/{hash}',
-	[VerifyEmailController::class, 'verifyEmail']
-)->middleware('guest')->name('verification.verify');
-
-Route::get('/email/verification-notification/{user}', [VerifyEmailController::class, 'resendEmail'])->middleware('guest')->name('verification.send');
-
-Route::post('/register', [UserController::class, 'register'])->middleware('guest')->name('register');
-Route::post('/logout', [UserController::class, 'logout'])->name('logout');
-Route::get('/log', function () {
-	// Auth::logout();
-	return response('logged out ' . auth()->user());
+	Route::post('/register', [UserController::class, 'register'])->name('register');
 });
 Route::get('/check-auth-state', [UserController::class, 'checkState'])->name('check-auth-state');
+Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum')->name('logout');

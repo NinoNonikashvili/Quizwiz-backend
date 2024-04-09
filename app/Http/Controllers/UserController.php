@@ -22,7 +22,7 @@ class UserController extends Controller
 
 			return response('Verification link is sent to your email ' . $request->user(), 200)->header('Content-Type', 'application/json');
 		}
-		return response('invalid data', 422)->header('Content-Type', 'text/plain');
+		return response('invalid data', 422)->header('Content-Type', 'application/json');
 	}
 
 	/**
@@ -49,7 +49,7 @@ class UserController extends Controller
 	public function logout()
 	{
 		Auth::logout();
-		return response('user logged out successfully', 200)->header('Content-Type', 'application/json');
+		return response()->noContent();
 	}
 
 	public function checkState()
