@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
@@ -23,3 +24,9 @@ Route::middleware('guest')->group(function () {
 });
 Route::get('/check-auth-state', [UserController::class, 'checkState'])->name('check-auth-state');
 Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum')->name('logout');
+
+Route::controller(QuizController::class)->group(function () {
+	Route::get('/quizes', 'index')->name('get-quizes');
+	Route::get('/quize/{id}', 'singleQuizInfo')->name('single-quiz-info');
+	Route::get('/test/{id}', 'singleQuizTest')->name('single-quiz-test');
+});
