@@ -35,7 +35,8 @@ class UserController extends Controller
 		if ($user && $user->email_verified_at !== null) {
 			if (Auth::attempt(['email'=> $request['email'], 'password'=>$request['password']], $request['remember'])) {
 				$request->session()->regenerate();
-				return response('logged in successfully', 200)->header('Content-Type', 'application/json');
+				$user = ['username' =>auth()->user()->username, 'email'=>auth()->user()->email];
+				return response($user, 200)->header('Content-Type', 'application/json');
 			}
 			return response('wrong credentials', 404)->header('Content-Type', 'application/json');
 		} elseif ($user && $user->email_verified_at === null) {
@@ -43,5 +44,17 @@ class UserController extends Controller
 		}
 
 		return response('user was not found', 404)->header('Content-Type', 'application/json');
+	}
+
+	public function logout()
+	{
+		Auth::logout();
+		return response('user logged out successfully', 200)->header('Content-Type', 'application/json');
+	}
+
+	public function checkState()
+	{
+		$user = auth()->user() ? ['username' =>auth()->user()->username, 'email'=>auth()->user()->email] : null;
+		return Response($user);
 	}
 }
