@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\LoginUserRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -35,8 +36,7 @@ class UserController extends Controller
 		if ($user && $user->email_verified_at !== null) {
 			if (Auth::attempt(['email'=> $request['email'], 'password'=>$request['password']], $request['remember'])) {
 				$request->session()->regenerate();
-				$user = ['username' =>auth()->user()->username, 'email'=>auth()->user()->email];
-				return response($user, 200)->header('Content-Type', 'application/json');
+				return new UserResource(auth()->user());
 			}
 			return response('wrong credentials', 404)->header('Content-Type', 'application/json');
 		} elseif ($user && $user->email_verified_at === null) {
@@ -54,7 +54,6 @@ class UserController extends Controller
 
 	public function checkState()
 	{
-		$user = auth()->user() ? ['username' =>auth()->user()->username, 'email'=>auth()->user()->email] : null;
-		return Response($user);
+		return auth()->user() ? new UserResource(auth()->user()) : null;
 	}
 }
