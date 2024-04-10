@@ -20,4 +20,19 @@ class Quiz extends Model
 	{
 		return $this->belongsToMany(Category::class);
 	}
+
+	public function users(): BelongsToMany
+	{
+		return $this->belongsToMany(User::class);
+	}
+
+	public function questions(): BelongsToMany
+	{
+		return $this->belongsToMany(Question::class, 'answer_question_quiz');
+	}
+
+	// public function answers(): BelongsToMany
+	// {
+	// 	return $this->belongsToMany(Answer::class);
+	// }
 }

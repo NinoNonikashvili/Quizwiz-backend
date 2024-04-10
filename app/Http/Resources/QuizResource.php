@@ -22,6 +22,7 @@ class QuizResource extends JsonResource
 			'level_id'     => $this->level_id,
 			'level'        => $this->level,
 			'categories'   => $this->categories,
+			'users'        => $this->users,
 		];
 	}
 }

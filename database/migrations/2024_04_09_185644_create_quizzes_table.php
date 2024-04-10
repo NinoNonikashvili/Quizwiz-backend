@@ -16,7 +16,7 @@ return new class extends Migration {
 			$table->text('instructions');
 			$table->text('excerpt');
 			$table->string('image')->nullable();
-			$table->string('level_id')->nullable();
+			$table->foreignId('level_id')->default(1)->constrained();
 			$table->timestamps();
 		});
 	}

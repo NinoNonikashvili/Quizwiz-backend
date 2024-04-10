@@ -10,10 +10,12 @@ return new class extends Migration {
 	 */
 	public function up(): void
 	{
-		Schema::create('category_quiz', function (Blueprint $table) {
+		Schema::create('answer_question_quiz', function (Blueprint $table) {
 			$table->id();
-			$table->foreignId('category_id')->constrained();
-			$table->foreignId('quiz_id')->constrained();
+			$table->foreignId('quiz_id')->default(1)->constrained();
+			$table->foreignId('question_id')->constrained();
+			$table->foreignId('answer_id')->default(1)->constrained();
+			$table->string('answer_status')->default(false);
 			$table->timestamps();
 		});
 	}
@@ -23,6 +25,6 @@ return new class extends Migration {
 	 */
 	public function down(): void
 	{
-		Schema::dropIfExists('category_quiz');
+		Schema::dropIfExists('answer_question_quiz');
 	}
 };
