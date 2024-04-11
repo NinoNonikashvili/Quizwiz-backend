@@ -18,17 +18,23 @@ class DatabaseSeeder extends Seeder
 	 */
 	public function run(): void
 	{
-		// User::factory(10)->create();
+		Level::factory()->create();
 
-		Level::factory(2)->create();
-		User::factory()->hasQuizes(3)->create([
+		User::factory()->create([
 			'username' => 'nino',
 			'email'    => 'test@example.com',
 		]);
-		Answer::factory(6)->create();
-		Question::factory(3)->hasAnswers(4)->hasQuizes(2)->create();
-
-		Category::factory(2)->hasQuizes(3)->create();
-		Quiz::factory(4)->hasUsers(2)->hasCategories(2)->create();
+		Quiz::factory(4)->hasAttached(
+			Category::factory()->count(2),
+		)->hasAttached(
+			User::factory()->count(1),
+			['time'=> '12min', 'result' => 10]
+		)->create([
+			'level_id'=> 1,
+		]);
+		Question::factory(3)->hasAttached(
+			Answer::factory()->count(3),
+			['quiz_id' => 1, 'answer_status' => false]
+		)->create();
 	}
 }

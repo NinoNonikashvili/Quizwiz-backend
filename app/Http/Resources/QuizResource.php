@@ -14,15 +14,31 @@ class QuizResource extends JsonResource
 	 */
 	public function toArray(Request $request): array
 	{
+		$time = null;
+		$result = null;
+		$completed = false;
+		$date = null;
+		if (auth()->user()) {
+			$user = $this->users->filter(function ($obj) {
+				return $obj->id === 1;
+			});
+			$completed = true;
+			$time = $user->time;
+			$result = $user->result;
+			$date = $user->created_at;
+		}
+
 		return [
-			'title'        => $this->title,
-			'instructions' => $this->instructions,
-			'excerpt'      => $this->excerpt,
-			'image'        => $this->image,
-			'level_id'     => $this->level_id,
-			'level'        => $this->level,
-			'categories'   => $this->categories,
-			'users'        => $this->users,
+			'id'                 => $this->id,
+			'title'              => $this->title,
+			'image'              => $this->image,
+			'level'              => $this->level,
+			'categories'         => $this->categories,
+			'total_users'        => $this->users->count(),
+			'total_time'         => $time,
+			'points'             => $result,
+			'completed'          => $completed,
+			'date'               => $date,
 		];
 	}
 }

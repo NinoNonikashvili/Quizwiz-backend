@@ -16,7 +16,6 @@ return new class extends Migration {
 			$table->string('color_active');
 			$table->string('bg');
 			$table->string('bg_active');
-			$table->timestamps();
 		});
 	}
 

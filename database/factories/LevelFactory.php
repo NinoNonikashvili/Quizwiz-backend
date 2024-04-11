@@ -17,7 +17,7 @@ class LevelFactory extends Factory
 	public function definition(): array
 	{
 		return [
-			'title'                     => fake()->title(),
+			'title'                     => fake()->word(),
 			'color_active'              => fake()->colorName(),
 			'bg'                        => fake()->colorName(),
 			'bg_active'                 => fake()->colorName(),

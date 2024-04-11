@@ -23,16 +23,11 @@ class Quiz extends Model
 
 	public function users(): BelongsToMany
 	{
-		return $this->belongsToMany(User::class);
+		return $this->belongsToMany(User::class)->withPivot(['time', 'result']);
 	}
 
 	public function questions(): BelongsToMany
 	{
 		return $this->belongsToMany(Question::class, 'answer_question_quiz');
 	}
-
-	// public function answers(): BelongsToMany
-	// {
-	// 	return $this->belongsToMany(Answer::class);
-	// }
 }

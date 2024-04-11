@@ -14,6 +14,8 @@ return new class extends Migration {
 			$table->id();
 			$table->foreignId('quiz_id')->constrained();
 			$table->foreignId('user_id')->nullable()->constrained();
+			$table->string('time');
+			$table->string('result');
 			$table->timestamps();
 		});
 	}

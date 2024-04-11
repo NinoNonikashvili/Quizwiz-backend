@@ -13,4 +13,6 @@ class Level extends Model
 	{
 		return $this->hasMany(Quiz::class);
 	}
+
+	public $timestamps = false;
 }
