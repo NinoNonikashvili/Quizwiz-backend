@@ -13,7 +13,7 @@ class QuizController extends Controller
 	 */
 	public function index()
 	{
-		return QuizResource::collection(Quiz::with(['categories', 'level', 'users'])->get());
+		return QuizResource::collection(Quiz::with(['categories', 'level', 'users'])->simplePaginate(2));
 	}
 
 	/**
