@@ -20,14 +20,21 @@ class DatabaseSeeder extends Seeder
 	{
 		Level::factory()->create();
 
-		User::factory()->create([
-			'username' => 'nino',
-			'email'    => 'test@example.com',
-		]);
-		Quiz::factory(27)->hasAttached(
+		Quiz::factory(20)->hasAttached(
 			Category::factory()->count(2),
 		)->hasAttached(
-			User::factory()->count(1),
+			User::factory()->create([
+				'email_verified_at' => '2024-04-13 15:11:39',
+				'password'          => '1234',
+			]),
+			['time'=> '12min', 'result' => 10]
+		)->create([
+			'level_id'=> 1,
+		]);
+		Quiz::factory(1)->hasAttached(
+			Category::factory()->count(2),
+		)->hasAttached(
+			User::factory()->create(),
 			['time'=> '12min', 'result' => 10]
 		)->create([
 			'level_id'=> 1,

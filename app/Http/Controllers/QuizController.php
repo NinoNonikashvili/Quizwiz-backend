@@ -16,8 +16,8 @@ class QuizController extends Controller
 	{
 		$db = Quiz::with(['categories', 'level'])->withCount('users');
 
-		if (auth()->user()) {
-			$db->whereHas('users', function ($query) {
+		if (auth()->check()) {
+			$db->with('users', function ($query) {
 				$query->where('user_id', auth()->user()->id);
 			});
 		}

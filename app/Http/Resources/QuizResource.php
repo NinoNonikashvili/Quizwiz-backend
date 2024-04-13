@@ -14,32 +14,25 @@ class QuizResource extends JsonResource
 	 */
 	public function toArray(Request $request): array
 	{
-		$time = null;
-		$result = null;
-		$completed = false;
-		$date = null;
-		if (auth()->user()) {
-			$user = $this->users->filter(function ($obj) {
-				return $obj->id === auth()->user()->id;
-			});
-			$completed = true;
-			$time = $user->time;
-			$result = $user->result;
-			$date = $user->created_at;
-		}
-
 		return [
-			'id'                 => $this->id,
-			'title'              => $this->title,
-			'image'              => $this->image,
-			'level'              => $this->whenLoaded('level'),
-			'categories'         => $this->whenLoaded('categories'),
-			'total_users'        => $this->users_count,
-			'total_time'         => $time,
-			'points'             => $result,
-			'completed'          => $completed,
-			'date'               => $date,
-			'users'              => $this->whenHas('users'),
+			'id'                          => $this->id,
+			'title'                       => $this->title,
+			'image'                       => $this->image,
+			'level'                       => $this->whenLoaded('level'),
+			'categories'                  => $this->whenLoaded('categories'),
+			'total_users'                 => $this->whenCounted('users'),
+			'points'                      => $this->whenLoaded('users', function () {
+				return $this->users->first()->pivot->result;
+			}, null),
+			'completed'                   => $this->whenLoaded('users', function () {
+				return !empty($this->users);
+			}, false),
+			'date'                        => $this->whenLoaded('users', function () {
+				return $this->users->first()->pivot->created_at;
+			}, null),
+			'total_time'                  => $this->whenLoaded('users', function () {
+				return $this->users->first()->pivot->time;
+			}, null),
 		];
 	}
 }
