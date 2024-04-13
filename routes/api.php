@@ -29,4 +29,6 @@ Route::controller(QuizController::class)->group(function () {
 	Route::get('/quizes', 'index')->name('get-quizes');
 	Route::get('/quize/{id}', 'singleQuizInfo')->name('single-quiz-info');
 	Route::get('/test/{id}', 'singleQuizTest')->name('single-quiz-test');
+	Route::get('/categories', 'getCategories')->name('get-categories');
+	Route::get('/levels', 'getLevels')->name('get-levels');
 });

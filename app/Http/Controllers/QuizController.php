@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Resources\QuizResource;
 use Illuminate\Http\Request;
 use App\Models\Quiz;
+use Illuminate\Support\Collection;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\DB;
 
 class QuizController extends Controller
 {
@@ -43,5 +45,15 @@ class QuizController extends Controller
 	 */
 	public function singleQuizTest(Request $request)
 	{
+	}
+
+	public function getCategories(): Collection
+	{
+		return DB::table('categories')->select('id', 'title')->get();
+	}
+
+	public function getLevels(): Collection
+	{
+		return DB::table('levels')->select('id', 'title', 'color_active', 'bg_active', 'bg')->get();
 	}
 }
