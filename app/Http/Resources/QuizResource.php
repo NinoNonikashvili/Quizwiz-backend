@@ -20,7 +20,7 @@ class QuizResource extends JsonResource
 		$date = null;
 		if (auth()->user()) {
 			$user = $this->users->filter(function ($obj) {
-				return $obj->id === 1;
+				return $obj->id === auth()->user()->id;
 			});
 			$completed = true;
 			$time = $user->time;
@@ -32,13 +32,14 @@ class QuizResource extends JsonResource
 			'id'                 => $this->id,
 			'title'              => $this->title,
 			'image'              => $this->image,
-			'level'              => $this->level,
-			'categories'         => $this->categories,
-			'total_users'        => $this->users->count(),
+			'level'              => $this->whenLoaded('level'),
+			'categories'         => $this->whenLoaded('categories'),
+			'total_users'        => $this->users_count,
 			'total_time'         => $time,
 			'points'             => $result,
 			'completed'          => $completed,
 			'date'               => $date,
+			'users'              => $this->whenHas('users'),
 		];
 	}
 }

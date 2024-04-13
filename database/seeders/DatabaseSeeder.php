@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
 			'username' => 'nino',
 			'email'    => 'test@example.com',
 		]);
-		Quiz::factory(4)->hasAttached(
+		Quiz::factory(27)->hasAttached(
 			Category::factory()->count(2),
 		)->hasAttached(
 			User::factory()->count(1),
