@@ -40,7 +40,7 @@ class Quiz extends Model
 			});
 		})
 		->when(request()->has('level'), function ($query) {
-			$query->where('level_id', request()->input('level'));
+			$query->whereIn('level_id', request()->input('level'));
 		})
 		->when(request()->has('sort_alphabet'), function ($query) {
 			$query->orderBy('title', request()->input('sort_alphabet'));
