@@ -42,7 +42,19 @@ class Quiz extends Model
 		->when(request()->has('level'), function ($query) {
 			$query->where('level_id', request()->input('level'));
 		})
-		->when(request()->has('my_quizes'), function ($query) {
+		->when(request()->has('sort_alphabet'), function ($query) {
+			$query->orderBy('title', request()->input('sort_alphabet'));
+		})
+		->when(request()->has('sort_date'), function ($query) {
+			$query->orderBy('created_at', request()->input('sort_date'));
+		})->when(request()->has('sort_popular'), function ($query) {
+			$query->orderBy('users_count', 'desc');
+		});
+	}
+
+	public function scopeWithUserQuizes(Builder $query)
+	{
+		$query->when(request()->has('my_quizes'), function ($query) {
 			$query->whereHas('users', function ($query) {
 				if (request()->input('my_quizes') === 'true') {
 					$query->where('user_id', auth()->user()->id);
@@ -52,16 +64,12 @@ class Quiz extends Model
 					});
 				}
 			});
-		})
-		->when(request()->has('alp_sort'), function ($query) {
-			$query->orderBy('title', request()->input('alp_sort'));
-		})
-		->when(request()->has('date_sort'), function ($query) {
-			$query->orderBy('created_at', request()->input('date_sort'));
-		})->when(request()->has('popular_sort'), function ($query) {
-			$query->orderBy('users_count', 'desc');
-		})
-		->when(auth()->check(), function ($query) {
+		});
+	}
+
+	public function scopeWithUserResults(Builder $query)
+	{
+		$query->when(auth()->check(), function ($query) {
 			$query->with('users', function ($query) {
 				$query->where('user_id', auth()->user()->id);
 			});

@@ -20,6 +20,8 @@ class QuizController extends Controller
 		$db = Quiz::with(['categories', 'level'])->withCount('users');
 
 		$db->withFilters();
+		$db->withUserQuizes();
+		$db->withUserResults();
 
 		if ($request->has('totalPage')) {
 			$per_page = 9 * $request->input('totalPage');
