@@ -18,11 +18,16 @@ class QuizController extends Controller
 	{
 		$db = Quiz::with(['categories', 'level'])->withCount('users');
 
-		if (auth()->check()) {
-			$db->with('users', function ($query) {
+		// if (auth()->check()) {
+		// 	$db->with('users', function ($query) {
+		// 		$query->where('user_id', auth()->user()->id);
+		// 	});
+		// }
+		$db->when(auth()->check(), function ($query) {
+			$query->with('users', function ($query) {
 				$query->where('user_id', auth()->user()->id);
 			});
-		}
+		});
 		if ($request->has('totalPage')) {
 			$per_page = 9 * $request->input('totalPage');
 			$quizes = $db->simplePaginate($per_page);
