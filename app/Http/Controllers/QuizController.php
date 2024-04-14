@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\QuizResource;
+use App\Models\Category;
+use App\Models\Level;
 use Illuminate\Http\Request;
 use App\Models\Quiz;
 use Illuminate\Support\Collection;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Support\Facades\DB;
 
 class QuizController extends Controller
 {
@@ -18,16 +19,8 @@ class QuizController extends Controller
 	{
 		$db = Quiz::with(['categories', 'level'])->withCount('users');
 
-		// if (auth()->check()) {
-		// 	$db->with('users', function ($query) {
-		// 		$query->where('user_id', auth()->user()->id);
-		// 	});
-		// }
-		$db->when(auth()->check(), function ($query) {
-			$query->with('users', function ($query) {
-				$query->where('user_id', auth()->user()->id);
-			});
-		});
+		$db->withFilters();
+
 		if ($request->has('totalPage')) {
 			$per_page = 9 * $request->input('totalPage');
 			$quizes = $db->simplePaginate($per_page);
@@ -54,11 +47,11 @@ class QuizController extends Controller
 
 	public function getCategories(): Collection
 	{
-		return DB::table('categories')->select('id', 'title')->get();
+		return Category::all();
 	}
 
 	public function getLevels(): Collection
 	{
-		return DB::table('levels')->select('id', 'title', 'color_active', 'bg_active', 'bg')->get();
+		return Level::all();
 	}
 }
