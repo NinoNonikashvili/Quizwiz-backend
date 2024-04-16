@@ -20,7 +20,7 @@ class QuizFactory extends Factory
 			'title'        => fake()->name(),
 			'instructions' => fake()->sentence(),
 			'excerpt'      => fake()->sentence(),
-			'image'        => fake()->image(),
+			'image'        => 'quizImages/' . fake()->image('public/storage/quizImages', 640, 480, null, false),
 		];
 	}
 }

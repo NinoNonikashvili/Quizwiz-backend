@@ -6,7 +6,6 @@ use App\Models\User;
 use App\Models\Quiz;
 use App\Models\Level;
 use App\Models\Category;
-use App\Models\Answer;
 use App\Models\Question;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -18,17 +17,24 @@ class DatabaseSeeder extends Seeder
 	 */
 	public function run(): void
 	{
-		// User::factory(10)->create();
-
-		Level::factory(2)->create();
-		User::factory()->hasQuizes(3)->create([
-			'username' => 'nino',
-			'email'    => 'test@example.com',
+		Level::factory()->create();
+		User::factory()->create([
+			'username' => 'nina',
+			'email'    => 'nina@gmail.com',
+			'password' => '1234',
 		]);
-		Answer::factory(6)->create();
-		Question::factory(3)->hasAnswers(4)->hasQuizes(2)->create();
 
-		Category::factory(2)->hasQuizes(3)->create();
-		Quiz::factory(4)->hasUsers(2)->hasCategories(2)->create();
+		Quiz::factory(15)->hasAttached(
+			Category::factory()->count(2),
+		)->hasAttached(
+			User::factory()->create(),
+			['time'=> '12min', 'result' => 10]
+		)->create([
+			'level_id'=> 1,
+		]);
+		Question::factory(3)->hasAnswers(3)
+		->create([
+			'quiz_id'=> 1,
+		]);
 	}
 }

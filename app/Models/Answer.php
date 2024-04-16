@@ -4,14 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Answer extends Model
 {
 	use HasFactory;
 
-	public function questions(): BelongsToMany
+	protected $fillable = [
+		'answer',
+		'is_correct',
+	];
+
+	public function question(): BelongsTo
 	{
-		return $this->belongsToMany(Question::class, 'answer_question_quiz');
+		return $this->belongsTo(Question::class);
 	}
 }

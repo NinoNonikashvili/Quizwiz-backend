@@ -15,14 +15,30 @@ class QuizResource extends JsonResource
 	public function toArray(Request $request): array
 	{
 		return [
-			'title'        => $this->title,
-			'instructions' => $this->instructions,
-			'excerpt'      => $this->excerpt,
-			'image'        => $this->image,
-			'level_id'     => $this->level_id,
-			'level'        => $this->level,
-			'categories'   => $this->categories,
-			'users'        => $this->users,
+			'id'                          => $this->id,
+			'title'                       => $this->title,
+			'image'                       => $this->image,
+			'level'                       => $this->whenLoaded('level'),
+			'categories'                  => $this->whenLoaded('categories'),
+			'total_users'                 => $this->whenCounted('users'),
+			'points'                      => $this->whenLoaded('users', function () {
+				if (!empty($this->users)) {
+					return $this->users->first()->pivot->result;
+				}
+			}, null),
+			'completed'                   => $this->whenLoaded('users', function () {
+				return !empty($this->users);
+			}, false),
+			'date'                        => $this->whenLoaded('users', function () {
+				if (!empty($this->users)) {
+					return $this->users->first()->pivot->created_at;
+				}
+			}, null),
+			'total_time'                  => $this->whenLoaded('users', function () {
+				if (!empty($this->users)) {
+					return $this->users->first()->pivot->time;
+				}
+			}, null),
 		];
 	}
 }

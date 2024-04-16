@@ -29,7 +29,7 @@ class UserController extends Controller
 	/**
 	 * if validation fails sends 422 error
 	 */
-	public function login(LoginUserRequest $request): Response
+	public function login(LoginUserRequest $request)
 	{
 		$user = User::where('email', $request['email'])->first();
 

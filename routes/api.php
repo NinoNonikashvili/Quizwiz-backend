@@ -23,10 +23,12 @@ Route::middleware('guest')->group(function () {
 	Route::post('/register', [UserController::class, 'register'])->name('register');
 });
 Route::get('/check-auth-state', [UserController::class, 'checkState'])->name('check-auth-state');
-Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum')->name('logout');
+Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
 Route::controller(QuizController::class)->group(function () {
 	Route::get('/quizes', 'index')->name('get-quizes');
 	Route::get('/quize/{id}', 'singleQuizInfo')->name('single-quiz-info');
 	Route::get('/test/{id}', 'singleQuizTest')->name('single-quiz-test');
+	Route::get('/categories', 'getCategories')->name('get-categories');
+	Route::get('/levels', 'getLevels')->name('get-levels');
 });
