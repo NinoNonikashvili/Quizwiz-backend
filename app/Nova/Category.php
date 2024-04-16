@@ -2,7 +2,6 @@
 
 namespace App\Nova;
 
-use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
@@ -47,53 +46,5 @@ class Category extends Resource
 			Text::make('Title'),
 			BelongsToMany::make('Quizes', 'quizes', Quiz::class),
 		];
-	}
-
-	/**
-	 * Get the cards available for the request.
-	 *
-	 * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-	 *
-	 * @return array
-	 */
-	public function cards(NovaRequest $request)
-	{
-		return [];
-	}
-
-	/**
-	 * Get the filters available for the resource.
-	 *
-	 * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-	 *
-	 * @return array
-	 */
-	public function filters(NovaRequest $request)
-	{
-		return [];
-	}
-
-	/**
-	 * Get the lenses available for the resource.
-	 *
-	 * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-	 *
-	 * @return array
-	 */
-	public function lenses(NovaRequest $request)
-	{
-		return [];
-	}
-
-	/**
-	 * Get the actions available for the resource.
-	 *
-	 * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-	 *
-	 * @return array
-	 */
-	public function actions(NovaRequest $request)
-	{
-		return [];
 	}
 }

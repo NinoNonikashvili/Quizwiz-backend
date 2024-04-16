@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
 			'password' => '1234',
 		]);
 
-		Quiz::factory(1)->hasAttached(
+		Quiz::factory(15)->hasAttached(
 			Category::factory()->count(2),
 		)->hasAttached(
 			User::factory()->create(),
