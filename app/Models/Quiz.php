@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Quiz extends Model
 {
 	use HasFactory;
+
+	protected $table = 'quizes';
 
 	public function level(): BelongsTo
 	{
@@ -27,9 +30,9 @@ class Quiz extends Model
 		return $this->belongsToMany(User::class)->withPivot(['time', 'result']);
 	}
 
-	public function questions(): BelongsToMany
+	public function questions(): HasMany
 	{
-		return $this->belongsToMany(Question::class, 'answer_question_quiz');
+		return $this->HasMany(Question::class);
 	}
 
 	public function scopeWithFilters(Builder $query): void

@@ -35,10 +35,10 @@ return [
 	*/
 
 	'guards' => [
-		'web' => [
-			'driver'   => 'session',
-			'provider' => 'users',
-			'expire'   => 60 * 24 * 30,
+		'api'   => [
+			'driver'    => 'session',
+			'provider'  => 'users',
+			'expire'    => 60 * 24 * 30,
 		],
 	],
 

@@ -10,12 +10,13 @@ return new class extends Migration {
 	 */
 	public function up(): void
 	{
-		Schema::create('answer_question_quiz', function (Blueprint $table) {
+		Schema::create('quizes', function (Blueprint $table) {
 			$table->id();
-			$table->foreignId('quiz_id')->default(1)->constrained();
-			$table->foreignId('question_id')->constrained();
-			$table->foreignId('answer_id')->default(1)->constrained();
-			$table->string('answer_status')->default(false);
+			$table->string('title');
+			$table->text('instructions');
+			$table->text('excerpt');
+			$table->string('image')->nullable();
+			$table->foreignId('level_id')->default(1)->constrained();
 			$table->timestamps();
 		});
 	}
@@ -25,6 +26,6 @@ return new class extends Migration {
 	 */
 	public function down(): void
 	{
-		Schema::dropIfExists('answer_question_quiz');
+		Schema::dropIfExists('quizes');
 	}
 };

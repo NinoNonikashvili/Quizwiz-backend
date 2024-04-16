@@ -3,30 +3,27 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rules;
-use Laravel\Nova\Fields\BelongsToMany;
-use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\Gravatar;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class User extends Resource
+class Question extends Resource
 {
 	/**
 	 * The model the resource corresponds to.
 	 *
-	 * @var class-string<\App\Models\User>
+	 * @var class-string<\App\Models\Question>
 	 */
-	public static $model = \App\Models\User::class;
+	public static $model = \App\Models\Question::class;
 
 	/**
 	 * The single value that should be used to represent the resource when being displayed.
 	 *
 	 * @var string
 	 */
-	public static $title = 'username';
+	public static $title = 'question';
 
 	/**
 	 * The columns that should be searched.
@@ -34,7 +31,7 @@ class User extends Resource
 	 * @var array
 	 */
 	public static $search = [
-		'id', 'username', 'email',
+		'question',
 	];
 
 	/**
@@ -48,30 +45,13 @@ class User extends Resource
 	{
 		return [
 			ID::make()->sortable(),
+			Text::make('question'),
+			Text::make('points'),
+			Text::make('Correct Answers'),
 
-			Gravatar::make()->maxWidth(50),
+			BelongsTo::make('Quiz', 'quiz', Quiz::class),
 
-			Text::make('Username')
-				->sortable()
-				->rules('required', 'max:255'),
-
-			Text::make('Email')
-				->sortable()
-				->rules('required', 'email', 'max:254')
-				->creationRules('unique:users,email')
-				->updateRules('unique:users,email,{{resourceId}}'),
-
-			Password::make('Password')
-				->onlyOnForms()
-				->creationRules('required', Rules\Password::defaults())
-				->updateRules('nullable', Rules\Password::defaults()),
-			DateTime::make('created at', 'created_at'),
-			BelongsToMany::make('Quizes', 'quizes', Quiz::class)->fields(function ($request, $relatedModel) {
-				return [
-					Text::make('Time'),
-					Text::make('Result'),
-				];
-			}),
+			HasMany::make('Answer', 'answers', Answer::class),
 		];
 	}
 

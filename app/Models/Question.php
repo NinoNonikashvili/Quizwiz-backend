@@ -4,19 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Question extends Model
 {
 	use HasFactory;
 
-	public function answers(): BelongsToMany
+	public function answers(): HasMany
 	{
-		return $this->belongsToMany(Answer::class, 'answer_question_quiz');
+		return $this->HasMany(Answer::class);
 	}
 
-	public function quizes(): BelongsToMany
+	public function quiz(): BelongsTo
 	{
-		return $this->belongsToMany(Quiz::class, 'answer_question_quiz');
+		return $this->belongsTo(Quiz::class);
 	}
 }

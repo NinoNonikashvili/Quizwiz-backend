@@ -10,11 +10,9 @@ return new class extends Migration {
 	 */
 	public function up(): void
 	{
-		Schema::create('category_quiz', function (Blueprint $table) {
-			$table->id();
-			$table->foreignId('category_id')->constrained();
-			$table->foreignId('quiz_id')->constrained('quizes');
-			$table->timestamps();
+		Schema::table('quiz_user', function (Blueprint $table) {
+			$table->unique(['quiz_id', 'user_id'], 'unique_entry');
+			$table->timestamp('date')->default(now());
 		});
 	}
 
@@ -23,6 +21,7 @@ return new class extends Migration {
 	 */
 	public function down(): void
 	{
-		Schema::dropIfExists('category_quiz');
+		Schema::table('quiz_user', function (Blueprint $table) {
+		});
 	}
 };
