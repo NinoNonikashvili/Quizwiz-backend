@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\QuizResource;
+use App\Http\Resources\SingleQuizResource;
 use App\Models\Category;
 use App\Models\Level;
 use Illuminate\Http\Request;
@@ -12,9 +13,6 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class QuizController extends Controller
 {
-	/**
-	 * Display a listing of the resource.
-	 */
 	public function index(Request $request): AnonymousResourceCollection
 	{
 		$db = Quiz::with(['categories', 'level'])->withCount('users');
@@ -32,17 +30,23 @@ class QuizController extends Controller
 		return QuizResource::collection($quizes);
 	}
 
-	/**
-	 * Show the form for creating a new resource.
-	 */
-	public function singleQuizInfo(): QuizResource
+	public function singleQuizInfo(Quiz $quiz): SingleQuizResource
 	{
-		return new QuizResource(Quiz::find(1));
+		return new SingleQuizResource($quiz);
 	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 */
+	public function similarQuizes(Quiz $quiz): AnonymousResourceCollection
+	{
+		$db = Quiz::where('id', '!=', $quiz->id);
+
+		$db->withUserQuizes();
+		$db->withUserResults();
+		$db->withSimilar($quiz);
+
+		$quizes = $db->take(3)->get();
+		return QuizResource::collection($quizes);
+	}
+
 	public function singleQuizTest(Request $request)
 	{
 	}

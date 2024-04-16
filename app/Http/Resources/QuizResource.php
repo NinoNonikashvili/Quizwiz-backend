@@ -17,7 +17,7 @@ class QuizResource extends JsonResource
 		return [
 			'id'                          => $this->id,
 			'title'                       => $this->title,
-			'image'                       => $this->image,
+			'image'                       => asset('storage/' . $this->image),
 			'level'                       => $this->whenLoaded('level'),
 			'categories'                  => $this->whenLoaded('categories'),
 			'total_users'                 => $this->whenCounted('users'),
