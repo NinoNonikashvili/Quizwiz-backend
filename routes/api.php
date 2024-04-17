@@ -27,7 +27,7 @@ Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
 Route::controller(QuizController::class)->group(function () {
 	Route::get('/quizes', 'index')->name('get-quizes');
-	Route::get('/quizes/{quiz}', 'singleQuizInfo')->name('single-quiz-info');
+	Route::get('/quizes/{quiz}', 'show')->name('show-single-quiz');
 	Route::get('/similar-quizes/{quiz}', 'similarQuizes')->name('similar-quizes');
 	Route::get('/test/{quiz}', 'quizTest')->name('single-quiz-test');
 	Route::post('/results/{quiz}', 'calculateResults')->name('calculate-results');

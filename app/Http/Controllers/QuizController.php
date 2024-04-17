@@ -31,7 +31,7 @@ class QuizController extends Controller
 		return QuizResource::collection($quizes);
 	}
 
-	public function singleQuizInfo(Quiz $quiz): SingleQuizResource
+	public function show(Quiz $quiz): SingleQuizResource
 	{
 		return new SingleQuizResource($quiz);
 	}

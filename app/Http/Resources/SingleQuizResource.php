@@ -29,8 +29,8 @@ class SingleQuizResource extends JsonResource
 				return $carry + $question['points'];
 			}),
 			'has_user_written'=> $this->when(auth()->check(), function () {
-				return auth()->user()->quizes->contains('id', $this->id);
-			}),
+				return $this->users->contains('id', auth()->user()->id);
+			}, false),
 		];
 	}
 }
