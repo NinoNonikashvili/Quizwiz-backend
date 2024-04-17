@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\QuizResource;
+use App\Http\Resources\QuizTestResource;
 use App\Http\Resources\SingleQuizResource;
 use App\Models\Category;
 use App\Models\Level;
@@ -47,8 +48,30 @@ class QuizController extends Controller
 		return QuizResource::collection($quizes);
 	}
 
-	public function singleQuizTest(Request $request)
+	public function quizTest(Quiz $quiz): AnonymousResourceCollection
 	{
+		return QuizTestResource::collection($quiz->questions()->with('answers')->get());
+	}
+
+	public function calculateResults(Quiz $quiz)
+	{
+		$quiz = $quiz->questions()->with('answers')->get();
+		$result_schema = [];
+
+		foreach ($quiz as $question) {
+			$questionId = $question['id'];
+			$correctAnswerIds = [];
+
+			foreach ($question['answers'] as $answer) {
+				if ($answer['isCorrect'] == 1) {
+					$correctAnswerIds[] = $answer['id'];
+				}
+			}
+
+			$result_schema[$questionId]['correct_answer'] = $correctAnswerIds;
+			$result_schema[$questionId]['point'] = $question->points;
+		}
+		return $result_schema;
 	}
 
 	public function getCategories(): Collection
