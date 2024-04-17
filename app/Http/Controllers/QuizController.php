@@ -53,12 +53,18 @@ class QuizController extends Controller
 		return QuizTestResource::collection($quiz->questions()->with('answers')->get());
 	}
 
-	public function calculateResults(Quiz $quiz)
+	public function calculateResults(Quiz $quiz, Request $request)
 	{
-		$quiz = $quiz->questions()->with('answers')->get();
+		$test = $quiz->questions()->with('answers')->get();
 		$result_schema = [];
+		$correct = 0;
+		$wrong = 0;
+		$total = 0;
+		if ($request->has('data')) {
+			return $request->input('data');
+		}
 
-		foreach ($quiz as $question) {
+		foreach ($test as $question) {
 			$questionId = $question['id'];
 			$correctAnswerIds = [];
 
@@ -71,7 +77,48 @@ class QuizController extends Controller
 			$result_schema[$questionId]['correct_answer'] = $correctAnswerIds;
 			$result_schema[$questionId]['point'] = $question->points;
 		}
-		return $result_schema;
+		foreach ($result_schema as $question_id =>$question_data) {
+			if ($request->has($question_id)) {
+				if (!empty(array_diff($question_data['correct_answer'], $request->input($question_id)))) {
+					$wrong++;
+				} else {
+					$correct++;
+					$total += $question_data['point'];
+				}
+			}
+		}
+		$result = [
+			[
+				'title' => 'Quiz name',
+				'text'  => $quiz->title,
+				'color' => '#000000',
+			],
+			[
+				'title' => 'Quiz level',
+				'text'  => $quiz->level->title,
+				'color' => $quiz->level->color_active,
+			],
+			[
+				'title' => 'Time',
+				'text'  => $request->input('time'),
+				'color' => '#000000',
+			],
+			[
+				'title' => 'Mistakes',
+				'text'  => $wrong,
+				'color' => '#E64646',
+			],
+			[
+				'title' => 'Correct answers',
+				'text'  => $correct,
+				'color' => '#12B76A',
+			],
+		];
+
+		$user = auth()->user() ? auth()->user()->id : null;
+
+		$quiz->users()->attach($user, ['time' => $request->input('time'), 'result' => $total]);
+		return $result;
 	}
 
 	public function getCategories(): Collection
