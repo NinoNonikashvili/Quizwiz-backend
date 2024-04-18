@@ -17,25 +17,25 @@ class QuizResource extends JsonResource
 		return [
 			'id'                          => $this->id,
 			'title'                       => $this->title,
-			'image'                       => $this->image,
+			'image'                       => asset('storage/' . $this->image),
 			'level'                       => $this->whenLoaded('level'),
 			'categories'                  => $this->whenLoaded('categories'),
 			'total_users'                 => $this->whenCounted('users'),
 			'points'                      => $this->whenLoaded('users', function () {
-				if (!empty($this->users)) {
+				if ($this->users->first()) {
 					return $this->users->first()->pivot->result;
 				}
 			}, null),
 			'completed'                   => $this->whenLoaded('users', function () {
-				return !empty($this->users);
+				return (bool)$this->users->first();
 			}, false),
 			'date'                        => $this->whenLoaded('users', function () {
-				if (!empty($this->users)) {
+				if ($this->users->first()) {
 					return $this->users->first()->pivot->created_at;
 				}
 			}, null),
 			'total_time'                  => $this->whenLoaded('users', function () {
-				if (!empty($this->users)) {
+				if ($this->users->first()) {
 					return $this->users->first()->pivot->time;
 				}
 			}, null),

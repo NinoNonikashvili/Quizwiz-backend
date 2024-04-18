@@ -28,9 +28,10 @@ class DatabaseSeeder extends Seeder
 			Category::factory()->count(2),
 		)->hasAttached(
 			User::factory()->create(),
-			['time'=> '12min', 'result' => 10]
+			['time'=> 12, 'result' => 10]
 		)->create([
 			'level_id'=> 1,
+			'time'    => 15,
 		]);
 		Question::factory(3)->hasAnswers(3)
 		->create([

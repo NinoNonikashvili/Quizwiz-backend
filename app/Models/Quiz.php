@@ -52,12 +52,14 @@ class Quiz extends Model
 			$query->orderBy('created_at', request()->input('sort_date'));
 		})->when(request()->has('sort_popular'), function ($query) {
 			$query->orderBy('users_count', 'desc');
+		})->when(request()->has('search'), function ($query) {
+			$query->where('title', 'LIKE', '%' . request()->input('search') . '%');
 		});
 	}
 
 	public function scopeWithUserQuizes(Builder $query)
 	{
-		$query->when(request()->has('my_quizes'), function ($query) {
+		$query->when(request()->has('my_quizes') && auth()->check(), function ($query) {
 			$query->whereHas('users', function ($query) {
 				if (request()->input('my_quizes') === 'true') {
 					$query->where('user_id', auth()->user()->id);
@@ -74,6 +76,17 @@ class Quiz extends Model
 	{
 		$query->when(auth()->check(), function ($query) {
 			$query->with('users', function ($query) {
+				$query->where('user_id', auth()->user()->id);
+			});
+		});
+	}
+
+	public function scopeWithSimilar(Builder $query, Quiz $quiz)
+	{
+		$query->whereHas('categories', function (Builder $query) use ($quiz) {
+			$query->whereIn('category_id', $quiz->categories->pluck('id'));
+		})->with(['categories', 'level'])->when(auth()->check(), function (Builder $query) {
+			$query->whereDoesnthave('users', function (Builder $query) {
 				$query->where('user_id', auth()->user()->id);
 			});
 		});
