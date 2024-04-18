@@ -85,35 +85,14 @@ class QuizController extends Controller
 					$correct++;
 					$total += $question_data['point'];
 				}
+			} else {
+				$wrong++;
 			}
 		}
 		$result = [
-			[
-				'title' => 'Quiz name',
-				'text'  => $quiz->title,
-				'color' => '#000000',
-			],
-			[
-				'title' => 'Quiz level',
-				'text'  => $quiz->level->title,
-				'color' => $quiz->level->color_active,
-			],
-			[
-				'title' => 'Time',
-				'text'  => $request->input('time'),
-				'color' => '#000000',
-			],
-			[
-				'title' => 'Mistakes',
-				'text'  => $wrong,
-				'color' => '#E64646',
-			],
-			[
-				'title' => 'Correct answers',
-				'text'  => $correct,
-				'color' => '#12B76A',
-			],
-		];
+			'time'            => $request->input('time'),
+			'correct_answers' => $correct,
+			'wrong_answers'   => $wrong];
 
 		$user = auth()->user() ? auth()->user()->id : null;
 
