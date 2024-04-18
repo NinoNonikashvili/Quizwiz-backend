@@ -52,6 +52,8 @@ class Quiz extends Model
 			$query->orderBy('created_at', request()->input('sort_date'));
 		})->when(request()->has('sort_popular'), function ($query) {
 			$query->orderBy('users_count', 'desc');
+		})->when(request()->has('search'), function ($query) {
+			$query->where('title', 'LIKE', '%' . request()->input('search') . '%');
 		});
 	}
 
