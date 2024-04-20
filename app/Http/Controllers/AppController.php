@@ -2,21 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\AppInfoResource;
 use Illuminate\Http\JsonResponse;
+use App\Models\AppInfo;
 
 class AppController extends Controller
 {
 	public function getFooterData(): JsonResponse
 	{
 		return response()->json([
-			'data' => [
-				'email'  => 'example@email.com',
-				'phone'  => '+995 889 990 934',
-				'socials'=> [
-					'Facebook'  => '#',
-					'Instagram' => '#',
-				],
-			],
+			'data' => new AppInfoResource(AppInfo::first()),
 		]);
 	}
 }
