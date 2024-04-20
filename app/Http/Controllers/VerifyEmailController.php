@@ -5,20 +5,25 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\CustomEmailVerificationRequest;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 
 class VerifyEmailController extends Controller
 {
-	public function verifyEmail(CustomEmailVerificationRequest $request)
+	public function verifyEmail(CustomEmailVerificationRequest $request): JsonResponse
 	{
 		if (!$request->hasValidSignature(false)) {
-			return response('expired', 403);
+			return response()->json([
+				'status' => 'VERIFICATION_LINK_EXPIRED',
+			]);
 		}
 		$request->fulfill();
 
-		return 'email verified';
+		return response()->json([
+			'status' => 'VERIFICATION_SUCCESS',
+		]);
 	}
 
-	public function resendEmail(Request $request)
+	public function resendEmail(Request $request): JsonResponse
 	{
 		if (str_contains(($request->route('user')), '@')) {
 			$user = User::where('email', $request->route('user'))->first();
@@ -28,9 +33,13 @@ class VerifyEmailController extends Controller
 
 		if ($user) {
 			$user->sendEmailVerificationNotification();
-			return response('email was resent', 200);
+			return response()->json([
+				'status' => 'VERIFICATION_LINK_SENT',
+			]);
 		}
 
-		return response('user was not found', 404);
+		return response()->json([
+			'status' => 'LOGIN_WRONG_INPUT',
+		]);
 	}
 }

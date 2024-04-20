@@ -5,6 +5,7 @@ use App\Http\Controllers\QuizController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AppController;
 
 Route::middleware('guest')->group(function () {
 	Route::post('/reset-password', [PasswordController::class, 'resetPassword'])->name('password.update');
@@ -34,3 +35,5 @@ Route::controller(QuizController::class)->group(function () {
 	Route::get('/categories', 'getCategories')->name('get-categories');
 	Route::get('/levels', 'getLevels')->name('get-levels');
 });
+
+Route::get('footer-data', [AppController::class, 'getFooterData'])->name('get-footer-data');
