@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\AppInfo;
 use App\Models\User;
 use App\Models\Quiz;
 use App\Models\Level;
@@ -36,6 +37,12 @@ class DatabaseSeeder extends Seeder
 		Question::factory(3)->hasAnswers(3)
 		->create([
 			'quiz_id'=> 1,
+		]);
+		AppInfo::factory()->create([
+			'email'     => 'example@email.com',
+			'phone'     => '+995 889 990 934',
+			'Facebook'  => '#',
+			'Instagram' => '#',
 		]);
 	}
 }
