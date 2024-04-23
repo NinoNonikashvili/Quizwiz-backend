@@ -256,7 +256,7 @@ class RegistrationTest extends TestCase
 		$temporaryUrl = '';
 		Notification::assertSentTo(User::where('email', 'newUser@mail.com')->first(), VerifyEmail::class, function (VerifyEmail $notification) use (&$temporaryUrl) {
 			$temporaryUrl = $notification->toMail(User::where('email', 'newUser@mail.com')->first())->actionUrl;
-			$temporaryUrl = str_replace('http://127.0.0.1:5173/login', '/api', $temporaryUrl);
+			$temporaryUrl = str_replace(config('app.frontend_url') . '/login', '/api', $temporaryUrl);
 			return true;
 		});
 
