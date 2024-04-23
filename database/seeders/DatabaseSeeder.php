@@ -18,17 +18,17 @@ class DatabaseSeeder extends Seeder
 	 */
 	public function run(): void
 	{
-		Level::factory()->create();
 		User::factory()->create([
 			'username' => 'nina',
 			'email'    => 'nina@gmail.com',
 			'password' => '1234',
 		]);
+		Level::factory()->create();
 
 		Quiz::factory(15)->hasAttached(
 			Category::factory()->count(2),
 		)->hasAttached(
-			User::factory()->create(),
+			User::find(1),
 			['time'=> 12, 'result' => 10]
 		)->create([
 			'level_id'=> 1,

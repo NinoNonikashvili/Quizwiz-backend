@@ -16,6 +16,10 @@
         <include>
             <directory>app</directory>
         </include>
+        <exclude>
+            <directory>app/Nova </directory>
+            <file>app/Providers/NovaServiceProvider.php </file>
+        </exclude>
     </source>
     <php>
         <env name="APP_ENV" value="testing"/>
