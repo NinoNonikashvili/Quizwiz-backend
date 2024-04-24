@@ -15,7 +15,6 @@ Users can also register on quizwiz and save their results and progress.
 * [Getting Started](#getting-started)
 * [Migrations](#migration)
 * [Development](#development)
-* [Deployment](#deployment)
 * [Resources](#resources)
 
 #
@@ -104,8 +103,9 @@ You can run Laravel's built-in development server by executing:
 ### Resources
 
 * [Figma Design](https://www.figma.com/file/QTWoxa2OYVayZ04WJ0ZZ9k/QuizWiz?type=design&node-id=403-36581&mode=design&t=yeXTQC7WywNVhRFJ-0)
+* [Postman API documentation](https://documenter.getpostman.com/view/33904104/2sA3BrWpbG)
 * DataBade Diagram
- <img src="/readme/drawSQL-image.png" width="600" style="position: relative; top: 4px" /> 
+ <img src="/public/images/drawSQL-image.png" width="600" style="position: relative; top: 4px" /> 
 
 
 
