@@ -12,7 +12,7 @@ return new class extends Migration {
 	{
 		Schema::table('answers', function (Blueprint $table) {
 			$table->boolean('isCorrect')->default(false);
-			$table->foreignId('question_id');
+			$table->foreignId('question_id')->nullable();
 		});
 	}
 
