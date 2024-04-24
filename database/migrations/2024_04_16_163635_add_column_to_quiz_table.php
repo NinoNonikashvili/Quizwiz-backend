@@ -11,7 +11,7 @@ return new class extends Migration {
 	public function up(): void
 	{
 		Schema::table('quizes', function (Blueprint $table) {
-			$table->smallInteger('time');
+			$table->smallInteger('time')->nullable();
 		});
 	}
 
