@@ -11,7 +11,7 @@ return new class extends Migration {
 	public function up(): void
 	{
 		Schema::table('questions', function (Blueprint $table) {
-			$table->foreignId('quiz_id');
+			$table->foreignId('quiz_id')->nullable();
 		});
 	}
 
