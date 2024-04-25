@@ -6,10 +6,10 @@
 ---
 Quizwiz is a platform where users can write quizes from various categories and levels. 
 Users can also register on quizwiz and save their results and progress.
+This particular repository holds an API backend for this app.
 
 #
 ### Table of Contents
-* [Introduction](#introduction)
 * [Prerequisites](#prerequisites)
 * [Tech Stack](#tech-stack)
 * [Getting Started](#getting-started)
@@ -29,8 +29,9 @@ Users can also register on quizwiz and save their results and progress.
 #
 ### Tech Stack
 
-* <img src="https://tse3.mm.bing.net/th?id=OIP.Hh_tEbIb4-MagJsV6x_RZwHaHa&pid=Api&P=0&h=220" height="18" style="position: relative; top: 4px" /> [Laravel@10.x](https://laravel.com/docs/10.x/) - back-end framework
-* <img src="[readme/assets/nova.png](https://img.stackshare.io/service/9599/preview.png)"  height="17" style="position: relative; top: 4px" /> [Laravel Nova](https://nova.laravel.com/) - flexible Admin Panel as espace "Super Admin"
+* <img src="https://brandlogos.net/wp-content/uploads/2022/01/laravel-logo-brandlogo.net_-300x300.png" height="18" style="position: relative; top: 4px" /> [Laravel@11.x](https://laravel.com/docs/10.x/) - back-end framework
+* <img src="https://img.stackshare.io/service/9599/preview.png"  height="17" style="position: relative; top: 4px" /> [Laravel Nova](https://nova.laravel.com/) - provides flexible Admin Panel. Once the migrations are run and user(s) is created nova admin panel can be used to manage data like create and update quizes, questions, answers also geenrate and attach categories and levels to quizes and more...
+
 
 
 #
