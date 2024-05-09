@@ -57,7 +57,7 @@ class AppServiceProvider extends ServiceProvider
 				'token' => $token,
 				'email' => $notifiable->getEmailForPasswordReset(),
 			], false));
-			$front_url = preg_replace('/:8000\/api/', ':5173', $url, 1);
+			$front_url = str_replace(env('APP_URL') . '/api', env('FRONTEND_URL'), $url);
 			$expire = config('auth.passwords.' . config('auth.defaults.passwords') . '.expire');
 			// $email = $notifiable->getEmailForPasswordReset();
 			return (new MailMessage)
