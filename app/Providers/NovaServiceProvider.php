@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
@@ -18,6 +20,31 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 		parent::boot();
 		Nova::userTimezone(function () {
 			return 'UTC';
+		});
+		Nova::createUserUsing(function ($command) {
+			$username = $command->ask('Username');
+			$email = $command->ask('Email Address');
+			$password = $command->secret('Password');
+			if (strlen($username) < 3) {
+				$command->error('username must be at least 4 chars');
+			} elseif (preg_match('/^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$/', $email) !== 1) {
+				$command->error('email must be valid');
+			} elseif (strlen($password) < 3) {
+				$command->error('password must be at least 4 chars');
+			} else {
+				return [
+					$username,
+					$email,
+					$password,
+				];
+			}
+		}, function ($name, $email, $password) {
+			(new User)->forceFill([
+				'username'          => $name,
+				'email'             => $email,
+				'password'          => Hash::make($password),
+				'email_verified_at' => now(),
+			])->save();
 		});
 	}
 
