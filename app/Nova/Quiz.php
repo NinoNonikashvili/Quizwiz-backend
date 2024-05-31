@@ -47,22 +47,22 @@ class Quiz extends Resource
 	{
 		return [
 			ID::make()->sortable(),
-			Text::make('title')->sortable(),
-			Text::make('excerpt'),
-			Text::make('instructions'),
+			Text::make('title')->sortable()->rules('required'),
+			Text::make('excerpt')->rules('required'),
+			Text::make('instructions')->rules('required'),
 			Image::make('image')->preview(function ($value) {
 				return asset('/storage/' . $value);
-			}),
+			})->rules('required'),
 			DateTime::make('created_at'),
-			BelongsTo::make('Level'),
-			BelongsToMany::make('Categories', 'categories', Category::class),
+			BelongsTo::make('Level')->rules('required'),
+			BelongsToMany::make('Categories', 'categories', Category::class)->rules('required'),
 			BelongsToMany::make('Users')->fields(function ($request, $relatedModel) {
 				return [
 					Text::make('Time'),
 					Text::make('Result'),
 				];
-			}),
-			HasMany::make('Question', 'questions', Question::class),
+			})->rules('required'),
+			HasMany::make('Question', 'questions', Question::class)->rules('required'),
 		];
 	}
 }
