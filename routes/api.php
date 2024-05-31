@@ -24,16 +24,16 @@ Route::middleware('guest')->group(function () {
 	Route::post('/register', [UserController::class, 'register'])->name('register');
 });
 Route::get('/check-auth-state', [UserController::class, 'checkState'])->name('check-auth-state');
-Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
+Route::post('/logout', [UserController::class, 'logout'])->name('logout')->middleware('auth');
 Route::controller(QuizController::class)->group(function () {
-	Route::get('/quizes', 'index')->name('get-quizes');
-	Route::get('/quizes/{quiz}', 'show')->name('show-single-quiz');
-	Route::get('/similar-quizes/{quiz}', 'similarQuizes')->name('similar-quizes');
-	Route::get('/test/{quiz}', 'quizTest')->name('single-quiz-test');
-	Route::post('/results/{quiz}', 'calculateResults')->name('calculate-results');
-	Route::get('/categories', 'getCategories')->name('get-categories');
-	Route::get('/levels', 'getLevels')->name('get-levels');
+	Route::get('/quizes', 'index')->name('get-quizes')->middleware('auth');
+	Route::get('/quizes/{quiz}', 'show')->name('show-single-quiz')->middleware('auth');
+	Route::get('/similar-quizes/{quiz}', 'similarQuizes')->name('similar-quizes')->middleware('auth');
+	Route::get('/test/{quiz}', 'quizTest')->name('single-quiz-test')->middleware('auth');
+	Route::post('/results/{quiz}', 'calculateResults')->name('calculate-results')->middleware('auth');
+	Route::get('/categories', 'getCategories')->name('get-categories')->middleware('auth');
+	Route::get('/levels', 'getLevels')->name('get-levels')->middleware('auth');
 });
 
 Route::get('footer-data', [AppController::class, 'getFooterData'])->name('get-footer-data');
