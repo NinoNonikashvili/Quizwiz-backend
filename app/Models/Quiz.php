@@ -91,4 +91,8 @@ class Quiz extends Model
 			});
 		});
 	}
+
+	public function scopeWithQuestions(Builder $query){
+		$query->whereHas('questions');
+	}
 }

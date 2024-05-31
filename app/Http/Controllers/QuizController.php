@@ -19,6 +19,7 @@ class QuizController extends Controller
 		$db = Quiz::with(['categories', 'level'])->withCount('users');
 
 		$db->withFilters();
+		$db->withQuestions();
 		$db->withUserQuizes();
 		$db->withUserResults();
 
