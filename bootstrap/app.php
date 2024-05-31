@@ -18,9 +18,15 @@ return Application::configure(basePath: dirname(__DIR__))
 	})
 	->withExceptions(function (Exceptions $exceptions) {
 		$exceptions->render(function (ValidationException $e, Request $request) {
-			return response()->json([
-				'status' => 'REGISTRATION_WRONG_INPUT',
-				'text'   => 'user already exists or data provided is invalid',
-			], 422);
+			if (str_contains($request->url(), 'register')) {
+				return response()->json([
+					'status'    => 'REGISTRATION_WRONG_INPUT',
+					'text'      => 'user already exists or data provided is invalid',
+				], 422);
+			} if ($request->is('nova-api/*')) {
+                return response()->json([
+                    'errors' => $e->errors(),
+                ], 422);
+            }
 		});
 	})->create();
