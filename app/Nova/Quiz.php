@@ -9,6 +9,7 @@ use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Quiz extends Resource
@@ -50,6 +51,7 @@ class Quiz extends Resource
 			Text::make('title')->sortable()->rules('required'),
 			Text::make('excerpt')->rules('required'),
 			Text::make('instructions')->rules('required'),
+			Number::make('time')->rules('required', ),
 			Image::make('image')->preview(function ($value) {
 				return asset('/storage/' . $value);
 			})->rules('required'),
