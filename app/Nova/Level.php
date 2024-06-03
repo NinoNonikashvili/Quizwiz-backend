@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Laravel\Nova\Fields\Color;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
@@ -44,9 +45,9 @@ class Level extends Resource
 		return [
 			ID::make()->sortable(),
 			Text::make('title'),
-			Text::make('bg'),
-			Text::make('bg_active'),
-			Text::make('color_active'),
+			Color::make('bg'),
+			Color::make('bg_active'),
+			Color::make('color_active'),
 			HasMany::make('Quizes', 'quizes', Quiz::class),
 		];
 	}
